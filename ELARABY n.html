@@ -18,80 +18,198 @@
       --warning-color: #ffc107;
       --light-color: #f8f9fa;
       --dark-color: #343a40;
+      --menu-width: 300px;
+      --header-height: 80px;
+      --transition-speed: 0.3s;
     }
     
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
     
     body { 
       font-family: 'Tajawal', sans-serif; 
-      margin: 0; 
-      padding: 0;
       background-color: #f5f7fa; 
       font-size: 16px;
       line-height: 1.6;
       color: #333;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
     
     header { 
-      background-color: var(--primary-color); 
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
       color: white; 
-      display: flex; 
-      flex-wrap: wrap;
-      padding: 10px 0; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 15px 0; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      z-index: 100;
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 100%;
+    }
+    
+    .logo-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
     }
     
     header .logo { 
-      font-size: 24px; 
+      font-size: 36px; 
       font-weight: bold; 
-      padding: 0 15px; 
-      flex: 1 0 100%;
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-      margin-bottom: 10px;
+      padding: 10px 0;
+      text-align: center;
+      margin: 0;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     
-    nav { 
-      background-color: var(--secondary-color); 
-      flex: 1 0 100%; 
-      display: flex; 
-      justify-content: center; 
-      flex-wrap: wrap; 
-      padding: 8px 5px; 
+    /* Hamburger menu icon */
+    .menu-toggle {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      z-index: 101;
+      width: 40px;
+      height: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0;
     }
     
-    nav button { 
-      background: transparent; 
-      color: white; 
-      margin: 3px 5px; 
-      padding: 8px 12px; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer; 
-      font-weight: 500; 
-      font-size: 14px; 
-      transition: all 0.3s ease;
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 4px;
+      background-color: white;
+      border-radius: 2px;
+      transition: all var(--transition-speed) ease;
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(13px) rotate(45deg);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-13px) rotate(-45deg);
+    }
+    
+    /* Improved side menu */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: var(--menu-width);
+      height: 100vh;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+      transition: transform 0.4s ease;
+      z-index: 99;
+      overflow-y: auto;
+      padding-top: var(--header-height);
+    }
+    
+    .side-menu.active {
+      transform: translateX(var(--menu-width));
+    }
+    
+    .side-menu nav {
+      display: flex;
+      flex-direction: column;
+      padding: 0 15px 20px;
+    }
+    
+    .side-menu button {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      margin: 8px 0;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 16px;
+      transition: all var(--transition-speed) ease;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 15px;
+      text-align: left;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
-    nav button:hover { 
-      background-color: var(--accent-color); 
-      transform: translateY(-2px);
+    .side-menu button:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateX(5px);
     }
     
-    nav button i {
-      font-size: 14px;
+    .side-menu button i {
+      font-size: 18px;
+      width: 25px;
+      text-align: center;
+    }
+    
+    .side-menu::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--header-height);
+      background-color: rgba(0,0,0,0.1);
+    }
+    
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 98;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(3px);
+    }
+    
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
     
     .container {
-      padding: 15px;
+      padding: 20px;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: var(--header-height) auto 0;
     }
     
     .section { 
@@ -99,8 +217,8 @@
       display: none; 
       background: white;
       border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
     
     .section.active { 
@@ -110,32 +228,33 @@
     
     .section h2 { 
       border-bottom: 2px solid #e1e5eb; 
-      padding-bottom: 8px; 
+      padding-bottom: 12px; 
       color: var(--primary-color); 
-      font-size: 20px; 
+      font-size: 22px; 
       margin-top: 0;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
     
     .gift { 
       background: #fff; 
-      padding: 12px 15px; 
+      padding: 15px 20px; 
       border-radius: 8px; 
-      margin-bottom: 12px; 
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+      margin-bottom: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
       font-size: 16px; 
-      transition: all 0.3s ease;
+      transition: all var(--transition-speed) ease;
       border-left: 4px solid var(--primary-color);
     }
     
     .gift:hover {
       transform: translateX(5px);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     
     .gift-name { 
@@ -145,23 +264,30 @@
     }
     
     .gift input[type="number"] { 
-      width: 60px; 
+      width: 70px; 
       text-align: center; 
       font-size: 16px; 
-      padding: 6px;
+      padding: 8px;
       border: 1px solid #ddd;
-      border-radius: 4px;
+      border-radius: 6px;
+      transition: all var(--transition-speed) ease;
+    }
+    
+    .gift input[type="number"]:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(0, 62, 156, 0.2);
+      outline: none;
     }
     
     .buttons { 
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
     
     .buttons button { 
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       border: none;
       border-radius: 50%;
       display: flex;
@@ -169,11 +295,13 @@
       justify-content: center;
       cursor: pointer;
       font-weight: bold;
-      transition: all 0.3s ease;
+      transition: all var(--transition-speed) ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .buttons button:hover {
       transform: scale(1.1);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     }
     
     .buttons button.plus { 
@@ -193,10 +321,10 @@
       margin: 20px auto; 
       display: none;
       max-width: 500px;
-      padding: 20px;
+      padding: 25px;
       background: white;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     
     #addGiftForm.active { 
@@ -205,85 +333,106 @@
     }
     
     #addGiftForm input { 
-      padding: 10px 12px; 
-      margin: 8px 0; 
+      padding: 12px 15px; 
+      margin: 15px 0; 
       font-size: 16px; 
       border: 1px solid #ddd;
-      border-radius: 5px;
+      border-radius: 6px;
       width: 100%;
-      max-width: 300px;
+      max-width: 350px;
+      transition: all var(--transition-speed) ease;
+    }
+    
+    #addGiftForm input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 62, 156, 0.2);
+      outline: none;
     }
     
     .save-btn { 
       display: block; 
-      margin: 20px auto; 
-      padding: 10px 25px; 
-      background-color: var(--success-color); 
+      margin: 25px auto 0; 
+      padding: 12px 30px; 
+      background: linear-gradient(135deg, var(--success-color), #218838); 
       color: white; 
       border: none; 
-      border-radius: 5px; 
+      border-radius: 6px; 
       font-size: 16px; 
+      font-weight: 500;
       cursor: pointer; 
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all var(--transition-speed) ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
     
     .save-btn:hover {
-      background-color: #218838;
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.15);
     }
     
     /* Responsive adjustments */
-    @media (min-width: 768px) {
+    @media (max-width: 767px) {
       header .logo { 
-        flex: 0 0 220px; 
-        justify-content: flex-start;
         font-size: 28px;
-        margin-bottom: 0;
-      }
-      
-      header {
-        padding: 10px 20px;
-        flex-wrap: nowrap;
-      }
-      
-      nav {
-        flex-wrap: nowrap;
-        padding: 0 10px;
-      }
-      
-      nav button {
-        font-size: 15px;
-        padding: 10px 15px;
-        margin: 0 5px;
       }
       
       .container {
-        padding: 20px;
+        padding: 15px;
       }
       
       .section {
-        padding: 20px;
+        padding: 15px;
       }
       
       .gift {
-        padding: 15px 20px;
+        padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .buttons {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      #addGiftForm {
+        padding: 20px 15px;
       }
     }
     
-    @media (min-width: 992px) {
-      nav button {
-        font-size: 16px;
-        padding: 10px 18px;
+    @media (min-width: 768px) {
+      header .logo { 
+        font-size: 36px;
+      }
+      
+      .container {
+        padding: 25px;
+      }
+      
+      .section {
+        padding: 25px;
       }
       
       .section h2 {
-        font-size: 22px;
+        font-size: 24px;
       }
       
       .gift {
         font-size: 17px;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      header .logo { 
+        font-size: 40px;
+      }
+      
+      .section h2 {
+        font-size: 26px;
       }
     }
     
@@ -298,17 +447,18 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      padding: 15px 20px;
-      background-color: var(--success-color);
+      padding: 15px 25px;
+      background: linear-gradient(135deg, var(--success-color), #218838);
       color: white;
-      border-radius: 5px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       z-index: 1000;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       transform: translateX(150%);
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
+      max-width: 350px;
     }
     
     .toast.show {
@@ -316,32 +466,180 @@
     }
     
     .toast.error {
-      background-color: var(--danger-color);
+      background: linear-gradient(135deg, var(--danger-color), #c82333);
+    }
+    
+    .toast.warning {
+      background: linear-gradient(135deg, var(--warning-color), #e0a800);
     }
     
     .toast i {
-      font-size: 18px;
+      font-size: 20px;
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      gap: 20px;
+    }
+    
+    .spinner.active {
+      display: flex;
+    }
+    
+    .spinner-icon {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Confirmation modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    
+    .modal-title {
+      font-size: 22px;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+    
+    .modal-message {
+      margin-bottom: 25px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .modal-btn {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-speed) ease;
+    }
+    
+    .modal-btn.confirm {
+      background: linear-gradient(135deg, var(--danger-color), #c82333);
+      color: white;
+    }
+    
+    .modal-btn.cancel {
+      background-color: #e9ecef;
+      color: #495057;
+    }
+    
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">ELARABY</div>
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+  
+  <!-- Side menu -->
+  <div class="side-menu" id="sideMenu">
     <nav>
       <button onclick="showSection('startSectionWrapper')"><i class="fas fa-flag"></i> Start</button>
       <button onclick="showSection('outSectionWrapper')"><i class="fas fa-arrow-up"></i> Taken Out</button>
       <button onclick="showSection('remainSectionWrapper')"><i class="fas fa-boxes"></i> Remaining</button>
       <button onclick="showSection('warehouseSectionWrapper')"><i class="fas fa-warehouse"></i> Warehouse</button>
+      <button onclick="showSection('storeRemainingSectionWrapper')"><i class="fas fa-store"></i> Warehouse Remaining</button>
+      <button onclick="showSection('shopRemainingSectionWrapper')"><i class="fas fa-shop"></i> Store Remaining</button>
+      <button onclick="showSection('shopWithdrawnSectionWrapper')"><i class="fas fa-cart-arrow-down"></i> Withdrawn from the store</button>
+      <button onclick="showSection('dayShiftSectionWrapper')"><i class="fas fa-sun"></i> Morning shift</button>
+      <button onclick="showSection('dailyTotalSectionWrapper')"><i class="fas fa-calendar-day"></i> Total today</button>
       <button onclick="showSection('addGiftForm')"><i class="fas fa-plus"></i> Add Gift</button>
       <button onclick="removeGift()"><i class="fas fa-trash"></i> Remove</button>
       <button onclick="saveData()"><i class="fas fa-save"></i> Save</button>
-      <button onclick="resetAll()"><i class="fas fa-broom"></i> Reset</button>
+      <button onclick="showResetModal()"><i class="fas fa-broom"></i> Reset</button>
       <button onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
     </nav>
+  </div>
+
+  <!-- Loading spinner -->
+  <div class="spinner" id="spinner">
+    <div class="spinner-icon"></div>
+    <div>Generating PDF...</div>
+  </div>
+
+  <!-- Confirmation modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3 class="modal-title" id="modalTitle">Confirm Action</h3>
+      <p class="modal-message" id="modalMessage">Are you sure you want to perform this action?</p>
+      <div class="modal-buttons">
+        <button class="modal-btn cancel" onclick="hideModal()">Cancel</button>
+        <button class="modal-btn confirm" onclick="confirmAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-container">
+      <div class="logo-container">
+        <button class="menu-toggle" id="menuToggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="logo">ELARABY</div>
+      </div>
+    </div>
   </header>
 
   <div class="container">
-    <div class="section" id="startSectionWrapper">
+    <div class="section active" id="startSectionWrapper">
       <h2><i class="fas fa-flag"></i> Start Shift Stock</h2>
       <div id="startSection"></div>
     </div>
@@ -363,6 +661,32 @@
       <div id="warehouseSection"></div>
     </div>
 
+    <div class="section" id="storeRemainingSectionWrapper">
+      <h2><i class="fas fa-store"></i> Warehouse Remaining</h2>
+      <div id="storeRemainingSection"></div>
+    </div>
+
+    <div class="section" id="shopRemainingSectionWrapper">
+      <h2><i class="fas fa-shop"></i> Store Remaining</h2>
+      <div id="shopRemainingSection"></div>
+    </div>
+
+    <div class="section" id="shopWithdrawnSectionWrapper">
+      <h2><i class="fas fa-cart-arrow-down"></i> Withdrawn from the store</h2>
+      <div id="shopWithdrawnSection"></div>
+    </div>
+
+    <div class="section" id="dayShiftSectionWrapper">
+      <h2><i class="fas fa-sun"></i> Morning shift</h2>
+      <div id="dayShiftSection"></div>
+      <button class="save-btn" onclick="saveData()"><i class="fas fa-save"></i> Save Data</button>
+    </div>
+
+    <div class="section" id="dailyTotalSectionWrapper">
+      <h2><i class="fas fa-calendar-day"></i> Total today</h2>
+      <div id="dailyTotalSection"></div>
+    </div>
+
     <div id="addGiftForm">
       <h2><i class="fas fa-plus-circle"></i> Add New Gift</h2>
       <input type="text" id="newGiftName" placeholder="Enter gift name">
@@ -381,20 +705,21 @@
     const outSection = document.getElementById("outSection");
     const remainSection = document.getElementById("remainSection");
     const warehouseSection = document.getElementById("warehouseSection");
+    const storeRemainingSection = document.getElementById("storeRemainingSection");
+    const shopRemainingSection = document.getElementById("shopRemainingSection");
+    const shopWithdrawnSection = document.getElementById("shopWithdrawnSection");
+    const dayShiftSection = document.getElementById("dayShiftSection");
+    const dailyTotalSection = document.getElementById("dailyTotalSection");
     const toast = document.getElementById("toast");
-    const toastMessage = document.getElementById("toastMessage");
+    const menuToggle = document.getElementById("menuToggle");
+    const sideMenu = document.getElementById("sideMenu");
+    const overlay = document.getElementById("overlay");
+    const spinner = document.getElementById("spinner");
+    const modal = document.getElementById("modal");
     let giftData = {};
+    let modalAction = null;
 
-    function showToast(message, isError = false) {
-      toastMessage.textContent = message;
-      toast.className = isError ? 'toast error show' : 'toast show';
-      toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${message}`;
-      
-      setTimeout(() => {
-        toast.className = 'toast';
-      }, 3000);
-    }
-
+    // Initialize the app
     function init() {
       const savedData = localStorage.getItem("giftData");
       if (savedData) {
@@ -410,11 +735,92 @@
         gifts.forEach(name => createGiftRows(name));
       }
       showSection('startSectionWrapper');
+      
+      // Set up event listeners
+      menuToggle.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', closeMenu);
+      
+      // Close menu when clicking on a link (for mobile)
+      document.querySelectorAll('.side-menu button').forEach(button => {
+        button.addEventListener('click', closeMenu);
+      });
     }
 
-    function createGiftRows(name) {
-      if (!giftData[name]) giftData[name] = { start: 0, out: 0, warehouse: 0 };
+    // Toggle side menu
+    function toggleMenu() {
+      sideMenu.classList.toggle("active");
+      overlay.classList.toggle("active");
+      menuToggle.classList.toggle("active");
+    }
 
+    // Close side menu
+    function closeMenu() {
+      sideMenu.classList.remove("active");
+      overlay.classList.remove("active");
+      menuToggle.classList.remove("active");
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      toast.innerHTML = `
+        <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : 
+                         type === 'warning' ? 'fa-exclamation-triangle' : 
+                         'fa-check-circle'}"></i> 
+        <span id="toastMessage">${message}</span>
+      `;
+      toast.className = `toast ${type} show`;
+      
+      setTimeout(() => {
+        toast.className = 'toast';
+      }, 3000);
+    }
+
+    // Show modal dialog
+    function showModal(title, message, action) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalMessage").textContent = message;
+      modalAction = action;
+      modal.classList.add("active");
+    }
+
+    // Hide modal dialog
+    function hideModal() {
+      modal.classList.remove("active");
+    }
+
+    // Confirm modal action
+    function confirmAction() {
+      if (modalAction) {
+        modalAction();
+      }
+      hideModal();
+    }
+
+    // Show reset confirmation modal
+    function showResetModal() {
+      showModal(
+        "⚠️ Reset All Data", 
+        "Are you sure you want to reset all data? This cannot be undone.", 
+        resetAll
+      );
+    }
+
+    // Create gift rows for all sections
+    function createGiftRows(name) {
+      if (!giftData[name]) {
+        giftData[name] = { 
+          start: 0, 
+          out: 0, 
+          warehouse: 0,
+          storeRemaining: 0,
+          shopRemaining: 0,
+          shopWithdrawn: 0,
+          dayShift: 0,
+          dailyTotal: 0
+        };
+      }
+
+      // Start Section
       const startRow = document.createElement("div");
       startRow.className = "gift";
       startRow.innerHTML = `
@@ -423,6 +829,7 @@
       `;
       startSection.appendChild(startRow);
 
+      // Out Section
       const outRow = document.createElement("div");
       outRow.className = "gift";
       outRow.innerHTML = `
@@ -435,6 +842,7 @@
       `;
       outSection.appendChild(outRow);
 
+      // Remain Section
       const remainRow = document.createElement("div");
       remainRow.className = "gift";
       remainRow.id = `remain-${name}`;
@@ -447,6 +855,7 @@
       `;
       remainSection.appendChild(remainRow);
 
+      // Warehouse Section
       const warehouseRow = document.createElement("div");
       warehouseRow.className = "gift";
       warehouseRow.innerHTML = `
@@ -454,18 +863,170 @@
         <input type="number" value="${giftData[name].warehouse}" min="0" onchange="updateWarehouse('${name}', this.value)">
       `;
       warehouseSection.appendChild(warehouseRow);
+
+      // Warehouse Remaining Section
+      const storeRemainingRow = document.createElement("div");
+      storeRemainingRow.className = "gift";
+      storeRemainingRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <input type="number" value="${giftData[name].storeRemaining}" min="0" onchange="updateStoreRemaining('${name}', this.value)">
+      `;
+      storeRemainingSection.appendChild(storeRemainingRow);
+
+      //Store Remaining Section
+      const shopRemainingRow = document.createElement("div");
+      shopRemainingRow.className = "gift";
+      shopRemainingRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <input type="number" value="${giftData[name].shopRemaining}" min="0" onchange="updateShopRemaining('${name}', this.value)">
+      `;
+      shopRemainingSection.appendChild(shopRemainingRow);
+
+      //Withdrawn from the store Section
+      const shopWithdrawnRow = document.createElement("div");
+      shopWithdrawnRow.className = "gift";
+      shopWithdrawnRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <input type="number" value="${giftData[name].shopWithdrawn}" min="0" onchange="updateShopWithdrawn('${name}', this.value)">
+      `;
+      shopWithdrawnSection.appendChild(shopWithdrawnRow);
+
+      //Morning shift Section
+      const dayShiftRow = document.createElement("div");
+      dayShiftRow.className = "gift";
+      dayShiftRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <input type="number" value="${giftData[name].dayShift}" min="0" onchange="updateDayShift('${name}', this.value)">
+      `;
+      dayShiftSection.appendChild(dayShiftRow);
+
+      //Total today Section
+      const dailyTotalRow = document.createElement("div");
+      dailyTotalRow.className = "gift";
+      dailyTotalRow.id = `dailyTotal-${name}`;
+      const dailyTotal = calculateDailyTotal(name);
+      dailyTotalRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <span id="dailyTotalValue-${name}" style="color: var(--primary-color); font-weight: bold;">
+          ${dailyTotal}
+        </span>
+      `;
+      dailyTotalSection.appendChild(dailyTotalRow);
     }
 
+    // Update day shift quantity
+    function updateDayShift(name, value) {
+      giftData[name].dayShift = parseInt(value) || 0;
+      updateDailyTotal(name);
+    }
+
+    // Calculate daily total
+    function calculateDailyTotal(name) {
+      return (giftData[name].out || 0) + (giftData[name].dayShift || 0);
+    }
+
+    // Update daily total display
+    function updateDailyTotal(name) {
+      const dailyTotal = calculateDailyTotal(name);
+      giftData[name].dailyTotal = dailyTotal;
+      const dailyTotalElement = document.getElementById(`dailyTotalValue-${name}`);
+      if (dailyTotalElement) {
+        dailyTotalElement.textContent = dailyTotal;
+      }
+    }
+
+    // Update warehouse quantity
+    function updateWarehouse(name, value) {
+      const newValue = parseInt(value) || 0;
+      const oldValue = giftData[name].warehouse || 0;
+      const difference = newValue - oldValue;
+      
+      giftData[name].warehouse = newValue;
+      
+      // خصم الفرق من المتبقي في المخزن
+      giftData[name].storeRemaining -= difference;
+      if (giftData[name].storeRemaining < 0) giftData[name].storeRemaining = 0;
+      
+      // تحديث العرض
+      updateStoreRemainingDisplay(name);
+      updateRemain(name);
+    }
+
+    // Update Warehouse remaining display
+    function updateStoreRemainingDisplay(name) {
+      const storeRemainingElements = storeRemainingSection.querySelectorAll('.gift');
+      storeRemainingElements.forEach(element => {
+        if (element.textContent.includes(name)) {
+          element.querySelector('input').value = giftData[name].storeRemaining;
+        }
+      });
+    }
+
+    // Update store remaining quantity
+    function updateStoreRemaining(name, value) {
+      giftData[name].storeRemaining = parseInt(value) || 0;
+    }
+
+    // Update shop remaining quantity
+    function updateShopRemaining(name, value) {
+      giftData[name].shopRemaining = parseInt(value) || 0;
+    }
+
+    // Update shop withdrawn quantity
+    // Update shop withdrawn quantity
+// Update shop withdrawn quantity
+function updateShopWithdrawn(name, value) {
+  const newValue = parseInt(value) || 0;
+  const oldValue = giftData[name].shopWithdrawn || 0;
+  const difference = newValue - oldValue;
+  
+  giftData[name].shopWithdrawn = newValue;
+  
+  // 1. خصم الفرق من Store Remaining فقط
+  giftData[name].shopRemaining -= difference;
+  if (giftData[name].shopRemaining < 0) giftData[name].shopRemaining = 0;
+  
+  // 2. لا تقم بإضافة الكمية المسحوبة إلى start (لإبقاء start ثابتة)
+  
+  // 3. تحديث العرض
+  updateShopRemainingDisplay(name);
+  updateRemain(name); // سيتم حساب Remaining بناء على start الثابتة
+}
+
+    // Update start display
+    function updateStartDisplay(name) {
+      const startElements = startSection.querySelectorAll('.gift');
+      startElements.forEach(element => {
+        if (element.textContent.includes(name)) {
+          element.querySelector('input').value = giftData[name].start;
+        }
+      });
+    }
+
+    // Update shop remaining display
+    function updateShopRemainingDisplay(name) {
+      const shopRemainingElements = shopRemainingSection.querySelectorAll('.gift');
+      shopRemainingElements.forEach(element => {
+        if (element.textContent.includes(name)) {
+          element.querySelector('input').value = giftData[name].shopRemaining;
+        }
+      });
+    }
+
+    // Update start quantity
     function updateStart(name, value) {
       giftData[name].start = parseInt(value) || 0;
       updateRemain(name);
     }
 
+    // Set out quantity
     function setOut(name, value) {
       giftData[name].out = parseInt(value) || 0;
       updateRemain(name);
+      updateDailyTotal(name);
     }
 
+    // Change out quantity
     function changeOut(name, delta) {
       giftData[name].out += delta;
       if (giftData[name].out < 0) giftData[name].out = 0;
@@ -473,18 +1034,16 @@
         if (input.onchange.toString().includes(name)) input.value = giftData[name].out;
       });
       updateRemain(name);
+      updateDailyTotal(name);
     }
 
-    function updateWarehouse(name, value) {
-      giftData[name].warehouse = parseInt(value) || 0;
-      updateRemain(name);
-    }
-
+    // Calculate remaining quantity
     function calculateRemaining(name) {
       const g = giftData[name];
-      return (g.start || 0) + (g.warehouse || 0) - (g.out || 0);
-    }
+         return (g.start || 0) + (g.warehouse || 0) + (g.shopWithdrawn || 0) - (g.out || 0);    
+        }
 
+    // Update remaining display
     function updateRemain(name) {
       const remaining = calculateRemaining(name);
       const remainElement = document.getElementById(`remainValue-${name}`);
@@ -494,83 +1053,109 @@
       }
     }
 
+    // Save data to localStorage
     function saveData() {
       try {
         localStorage.setItem("giftData", JSON.stringify(giftData));
         showToast("Data saved successfully");
       } catch (e) {
-        showToast("Error saving data", true);
+        showToast("Error saving data", 'error');
       }
     }
 
+    // Reset all data
     function resetAll() {
-      if (confirm("⚠️ Are you sure you want to reset all data? This cannot be undone.")) {
-        localStorage.removeItem("giftData");
-        showToast("Data reset successfully");
-        setTimeout(() => location.reload(), 1000);
-      }
+      localStorage.removeItem("giftData");
+      showToast("Data reset successfully");
+      setTimeout(() => location.reload(), 1000);
     }
 
+    // Add new gift
     function addNewGift() {
       const input = document.getElementById("newGiftName");
       const name = input.value.trim();
       
       if (!name) {
-        showToast("Please enter a gift name", true);
+        showToast("Please enter a gift name", 'error');
         return;
       }
       
       if (giftData[name]) {
-        showToast("This gift already exists", true);
+        showToast("This gift already exists", 'error');
         return;
       }
       
-      giftData[name] = { start: 0, out: 0, warehouse: 0 };
+      giftData[name] = { 
+        start: 0, 
+        out: 0, 
+        warehouse: 0,
+        storeRemaining: 0,
+        shopRemaining: 0,
+        shopWithdrawn: 0,
+        dayShift: 0,
+        dailyTotal: 0
+      };
       createGiftRows(name);
       input.value = "";
       showToast(`"${name}" added successfully`);
       showSection('startSectionWrapper');
     }
 
+    // Remove gift
     function removeGift() {
       const name = prompt("Enter the exact name of the gift to remove:");
       
       if (!name) {
-        showToast("Operation cancelled", true);
+        showToast("Operation cancelled", 'warning');
         return;
       }
       
       if (!giftData[name]) {
-        showToast("Gift not found", true);
+        showToast("Gift not found", 'error');
         return;
       }
       
-      if (confirm(`Are you sure you want to permanently remove "${name}"?`)) {
-        delete giftData[name];
-        localStorage.setItem("giftData", JSON.stringify(giftData));
-        
-        // Clear all sections
-        startSection.innerHTML = '';
-        outSection.innerHTML = '';
-        remainSection.innerHTML = '';
-        warehouseSection.innerHTML = '';
-        
-        // Rebuild with remaining gifts
-        Object.keys(giftData).forEach(n => createGiftRows(n));
-        showToast(`"${name}" removed successfully`);
-      }
+      showModal(
+        "⚠️ Remove Gift", 
+        `Are you sure you want to permanently remove "${name}"?`, 
+        () => confirmRemove(name)
+      );
     }
 
+    // Confirm gift removal
+    function confirmRemove(name) {
+      delete giftData[name];
+      localStorage.setItem("giftData", JSON.stringify(giftData));
+      
+      // Clear all sections
+      startSection.innerHTML = '';
+      outSection.innerHTML = '';
+      remainSection.innerHTML = '';
+      warehouseSection.innerHTML = '';
+      storeRemainingSection.innerHTML = '';
+      shopRemainingSection.innerHTML = '';
+      shopWithdrawnSection.innerHTML = '';
+      dayShiftSection.innerHTML = '';
+      dailyTotalSection.innerHTML = '';
+      
+      // Rebuild with remaining gifts
+      Object.keys(giftData).forEach(n => createGiftRows(n));
+      showToast(`"${name}" removed successfully`);
+    }
+
+    // Show section
     function showSection(id) {
       const sections = document.querySelectorAll('.section, #addGiftForm');
       sections.forEach(sec => sec.classList.remove('active'));
       document.getElementById(id).classList.add('active');
+      closeMenu();
     }
 
+    // Export to PDF
     function exportToPDF() {
       const staffName = prompt("Please enter staff name:");
       if (!staffName) {
-        showToast("Staff name is required", true);
+        showToast("Staff name is required", 'error');
         return;
       }
 
@@ -583,7 +1168,6 @@
         minute: '2-digit'
       });
 
-      // Create a more professional PDF content
       let html = `
         <style>
           .pdf-header { 
@@ -609,7 +1193,7 @@
             font-size: 14px;
           }
           .pdf-table th { 
-            background-color: #003e9c; 
+            background: linear-gradient(135deg, #003e9c, #0073e6); 
             color: white; 
             padding: 10px; 
             text-align: left;
@@ -635,60 +1219,66 @@
             color: #dc3545; 
             font-weight: bold;
           }
+          .positive { 
+            color: #28a745; 
+            font-weight: bold;
+          }
+          .pdf-footer {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+          }
         </style>
         
         <div class="pdf-header">
-          <h1 class="pdf-title">ELARABY Gift Distribution Report</h1>
+          <h1 class="pdf-title">ELARABY Inventory Report</h1>
           <div class="pdf-subtitle">Staff: ${staffName} | Date: ${timestamp}</div>
-        </div>
-        
-        <div class="pdf-section">
-          <h2 class="pdf-section-title">Start Shift Stock</h2>
-          <table class="pdf-table">
-            <tr><th>Gift</th><th>Quantity</th></tr>`;
+        </div>`;
 
-      for (const name in giftData) {
-        html += `<tr><td>${name}</td><td>${giftData[name].start}</td></tr>`;
-      }
+      // Add all sections to the PDF
+      const sections = [
+        { id: 'start', title: 'Start Shift Stock', field: 'start' },
+        { id: 'warehouse', title: 'Warehouse Received', field: 'warehouse' },
+        { id: 'out', title: 'Taken Out', field: 'out' },
+        { id: 'remain', title: 'Remaining Stock', field: 'remain', calc: true },
+        { id: 'storeRemaining', title: 'Warehouse Remaining', field: 'storeRemaining' },
+        { id: 'shopRemaining', title: 'Store Remaining', field: 'shopRemaining' },
+        { id: 'shopWithdrawn', title: 'Withdrawn from the store', field: 'shopWithdrawn' },
+        { id: 'dayShift', title: 'Morning shift', field: 'dayShift' },
+        { id: 'dailyTotal', title: 'Total today', field: 'dailyTotal' }
+      ];
 
-      html += `</table></div>
-        
-        <div class="pdf-section">
-          <h2 class="pdf-section-title">Warehouse Received</h2>
-          <table class="pdf-table">
-            <tr><th>Gift</th><th>Quantity</th></tr>`;
+      sections.forEach(section => {
+        html += `
+          <div class="pdf-section">
+            <h2 class="pdf-section-title">${section.title}</h2>
+            <table class="pdf-table">
+              <tr><th>Gift</th><th>Quantity</th></tr>`;
 
-      for (const name in giftData) {
-        html += `<tr><td>${name}</td><td>${giftData[name].warehouse}</td></tr>`;
-      }
+        for (const name in giftData) {
+          let value = section.calc ? calculateRemaining(name) : giftData[name][section.field];
+          let className = '';
+          
+          if (section.calc) {
+            className = value < 0 ? 'negative' : 'positive';
+          }
+          
+          html += `<tr>
+            <td>${name}</td>
+            <td class="${className}">${value}</td>
+          </tr>`;
+        }
 
-      html += `</table></div>
-        
-        <div class="pdf-section">
-          <h2 class="pdf-section-title">Taken Out</h2>
-          <table class="pdf-table">
-            <tr><th>Gift</th><th>Quantity</th></tr>`;
+        html += `</table></div>`;
+      });
 
-      for (const name in giftData) {
-        html += `<tr><td>${name}</td><td>${giftData[name].out}</td></tr>`;
-      }
-
-      html += `</table></div>
-        
-        <div class="pdf-section">
-          <h2 class="pdf-section-title">Remaining Stock</h2>
-          <table class="pdf-table">
-            <tr><th>Gift</th><th>Quantity</th></tr>`;
-
-      for (const name in giftData) {
-        const remaining = calculateRemaining(name);
-        html += `<tr>
-          <td>${name}</td>
-          <td class="${remaining < 0 ? 'negative' : ''}">${remaining}</td>
-        </tr>`;
-      }
-
-      html += `</table></div>`;
+      html += `
+        <div class="pdf-footer">
+          Generated by ELARABY Inventory System | ${timestamp}
+        </div>`;
 
       const content = document.createElement('div');
       content.style.padding = '15px';
@@ -697,7 +1287,7 @@
 
       const opt = {
         margin: [10, 5, 10, 5],
-        filename: `ELARABY_Gift_Report_${staffName.replace(/\s+/g, '_')}_${now.getTime()}.pdf`,
+        filename: `ELARABY_Inventory_Report_${staffName.replace(/\s+/g, '_')}_${now.getTime()}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
           scale: 2,
@@ -713,19 +1303,20 @@
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      // Show loading message
-      showToast("Generating PDF...");
+      // Show loading spinner
+      spinner.classList.add('active');
       
-      // Generate PDF
       html2pdf().set(opt).from(content).save().then(() => {
         showToast("PDF downloaded successfully");
       }).catch(err => {
-        showToast("Error generating PDF", true);
+        showToast("Error generating PDF", 'error');
         console.error("PDF generation error:", err);
+      }).finally(() => {
+        spinner.classList.remove('active');
       });
     }
 
-    // Initialize the app
+    // Initialize the app when DOM is loaded
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
