@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>ELARABY</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+    
+    :root {
+      --primary-color: #003e9c;
+      --secondary-color: #0073e6;
+      --accent-color: #005bb5;
+      --success-color: #28a745;
+      --danger-color: #dc3545;
+      --warning-color: #ffc107;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Tajawal', sans-serif; 
+      margin: 0; 
+      padding: 0;
+      background-color: #f5f7fa; 
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    header { 
+      background-color: var(--primary-color); 
+      color: white; 
+      display: flex; 
+      flex-wrap: wrap;
+      padding: 10px 0; 
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    header .logo { 
+      font-size: 24px; 
+      font-weight: bold; 
+      padding: 0 15px; 
+      flex: 1 0 100%;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    
+    nav { 
+      background-color: var(--secondary-color); 
+      flex: 1 0 100%; 
+      display: flex; 
+      justify-content: center; 
+      flex-wrap: wrap; 
+      padding: 8px 5px; 
+    }
+    
+    nav button { 
+      background: transparent; 
+      color: white; 
+      margin: 3px 5px; 
+      padding: 8px 12px; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      font-weight: 500; 
+      font-size: 14px; 
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    nav button:hover { 
+      background-color: var(--accent-color); 
+      transform: translateY(-2px);
+    }
+    
+    nav button i {
+      font-size: 14px;
+    }
+    
+    .container {
+      padding: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section { 
+      margin: 20px 0; 
+      display: none; 
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .section.active { 
+      display: block; 
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .section h2 { 
+      border-bottom: 2px solid #e1e5eb; 
+      padding-bottom: 8px; 
+      color: var(--primary-color); 
+      font-size: 20px; 
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .gift { 
+      background: #fff; 
+      padding: 12px 15px; 
+      border-radius: 8px; 
+      margin-bottom: 12px; 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      font-size: 16px; 
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .gift:hover {
+      transform: translateX(5px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+    
+    .gift-name { 
+      font-weight: bold; 
+      flex: 1; 
+      color: var(--primary-color); 
+    }
+    
+    .gift input[type="number"] { 
+      width: 60px; 
+      text-align: center; 
+      font-size: 16px; 
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .buttons { 
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .buttons button { 
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .buttons button:hover {
+      transform: scale(1.1);
+    }
+    
+    .buttons button.plus { 
+      background-color: var(--success-color); 
+      color: white; 
+      font-size: 18px; 
+    }
+    
+    .buttons button.minus { 
+      background-color: var(--danger-color); 
+      color: white; 
+      font-size: 18px; 
+    }
+    
+    #addGiftForm { 
+      text-align: center; 
+      margin: 20px auto; 
+      display: none;
+      max-width: 500px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    #addGiftForm.active { 
+      display: block; 
+      animation: fadeIn 0.5s ease;
+    }
+    
+    #addGiftForm input { 
+      padding: 10px 12px; 
+      margin: 8px 0; 
+      font-size: 16px; 
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .save-btn { 
+      display: block; 
+      margin: 20px auto; 
+      padding: 10px 25px; 
+      background-color: var(--success-color); 
+      color: white; 
+      border: none; 
+      border-radius: 5px; 
+      font-size: 16px; 
+      cursor: pointer; 
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .save-btn:hover {
+      background-color: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      header .logo { 
+        flex: 0 0 220px; 
+        justify-content: flex-start;
+        font-size: 28px;
+        margin-bottom: 0;
+      }
+      
+      header {
+        padding: 10px 20px;
+        flex-wrap: nowrap;
+      }
+      
+      nav {
+        flex-wrap: nowrap;
+        padding: 0 10px;
+      }
+      
+      nav button {
+        font-size: 15px;
+        padding: 10px 15px;
+        margin: 0 5px;
+      }
+      
+      .container {
+        padding: 20px;
+      }
+      
+      .section {
+        padding: 20px;
+      }
+      
+      .gift {
+        padding: 15px 20px;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      nav button {
+        font-size: 16px;
+        padding: 10px 18px;
+      }
+      
+      .section h2 {
+        font-size: 22px;
+      }
+      
+      .gift {
+        font-size: 17px;
+      }
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background-color: var(--success-color);
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(150%);
+      transition: transform 0.3s ease;
+    }
+    
+    .toast.show {
+      transform: translateX(0);
+    }
+    
+    .toast.error {
+      background-color: var(--danger-color);
+    }
+    
+    .toast i {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">ELARABY</div>
+    <nav>
+      <button onclick="showSection('startSectionWrapper')"><i class="fas fa-flag"></i> Start</button>
+      <button onclick="showSection('outSectionWrapper')"><i class="fas fa-arrow-up"></i> Taken Out</button>
+      <button onclick="showSection('remainSectionWrapper')"><i class="fas fa-boxes"></i> Remaining</button>
+      <button onclick="showSection('warehouseSectionWrapper')"><i class="fas fa-warehouse"></i> Warehouse</button>
+      <button onclick="showSection('addGiftForm')"><i class="fas fa-plus"></i> Add Gift</button>
+      <button onclick="removeGift()"><i class="fas fa-trash"></i> Remove</button>
+      <button onclick="saveData()"><i class="fas fa-save"></i> Save</button>
+      <button onclick="resetAll()"><i class="fas fa-broom"></i> Reset</button>
+      <button onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="section" id="startSectionWrapper">
+      <h2><i class="fas fa-flag"></i> Start Shift Stock</h2>
+      <div id="startSection"></div>
+    </div>
+
+    <div class="section" id="outSectionWrapper">
+      <h2><i class="fas fa-arrow-up"></i> Taken Out</h2>
+      <div id="outSection"></div>
+      <button class="save-btn" onclick="saveData()"><i class="fas fa-save"></i> Save Data</button>
+    </div>
+
+    <div class="section" id="remainSectionWrapper">
+      <h2><i class="fas fa-boxes"></i> Remaining</h2>
+      <div id="remainSection"></div>
+      <button class="save-btn" onclick="saveData()"><i class="fas fa-save"></i> Save Data</button>
+    </div>
+
+    <div class="section" id="warehouseSectionWrapper">
+      <h2><i class="fas fa-warehouse"></i> Warehouse Received</h2>
+      <div id="warehouseSection"></div>
+    </div>
+
+    <div id="addGiftForm">
+      <h2><i class="fas fa-plus-circle"></i> Add New Gift</h2>
+      <input type="text" id="newGiftName" placeholder="Enter gift name">
+      <button class="save-btn" onclick="addNewGift()"><i class="fas fa-plus"></i> Add Gift</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Operation successful</span>
+  </div>
+
+  <script>
+    const gifts = ["Coolear Bag", "Pouch", "Air Buff", "Laundry Bag", "Tote Bag", "Burger Presser", "Borcam", "Griff"];
+    const startSection = document.getElementById("startSection");
+    const outSection = document.getElementById("outSection");
+    const remainSection = document.getElementById("remainSection");
+    const warehouseSection = document.getElementById("warehouseSection");
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toastMessage");
+    let giftData = {};
+
+    function showToast(message, isError = false) {
+      toastMessage.textContent = message;
+      toast.className = isError ? 'toast error show' : 'toast show';
+      toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${message}`;
+      
+      setTimeout(() => {
+        toast.className = 'toast';
+      }, 3000);
+    }
+
+    function init() {
+      const savedData = localStorage.getItem("giftData");
+      if (savedData) {
+        try {
+          giftData = JSON.parse(savedData);
+          Object.keys(giftData).forEach(name => createGiftRows(name));
+          showToast("Data loaded successfully");
+        } catch (e) {
+          showToast("Error loading saved data", true);
+          gifts.forEach(name => createGiftRows(name));
+        }
+      } else {
+        gifts.forEach(name => createGiftRows(name));
+      }
+      showSection('startSectionWrapper');
+    }
+
+    function createGiftRows(name) {
+      if (!giftData[name]) giftData[name] = { start: 0, out: 0, warehouse: 0 };
+
+      const startRow = document.createElement("div");
+      startRow.className = "gift";
+      startRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <input type="number" value="${giftData[name].start}" min="0" onchange="updateStart('${name}', this.value)">
+      `;
+      startSection.appendChild(startRow);
+
+      const outRow = document.createElement("div");
+      outRow.className = "gift";
+      outRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <div class="buttons">
+          <button class="minus" onclick="changeOut('${name}', -1)">–</button>
+          <input type="number" value="${giftData[name].out}" min="0" onchange="setOut('${name}', this.value)">
+          <button class="plus" onclick="changeOut('${name}', 1)">+</button>
+        </div>
+      `;
+      outSection.appendChild(outRow);
+
+      const remainRow = document.createElement("div");
+      remainRow.className = "gift";
+      remainRow.id = `remain-${name}`;
+      const remaining = calculateRemaining(name);
+      remainRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <span id="remainValue-${name}" style="color: ${remaining < 0 ? 'var(--danger-color)' : 'var(--primary-color)'}; font-weight: bold;">
+          ${remaining}
+        </span>
+      `;
+      remainSection.appendChild(remainRow);
+
+      const warehouseRow = document.createElement("div");
+      warehouseRow.className = "gift";
+      warehouseRow.innerHTML = `
+        <span class="gift-name">${name}</span>
+        <input type="number" value="${giftData[name].warehouse}" min="0" onchange="updateWarehouse('${name}', this.value)">
+      `;
+      warehouseSection.appendChild(warehouseRow);
+    }
+
+    function updateStart(name, value) {
+      giftData[name].start = parseInt(value) || 0;
+      updateRemain(name);
+    }
+
+    function setOut(name, value) {
+      giftData[name].out = parseInt(value) || 0;
+      updateRemain(name);
+    }
+
+    function changeOut(name, delta) {
+      giftData[name].out += delta;
+      if (giftData[name].out < 0) giftData[name].out = 0;
+      document.querySelectorAll(`#outSection input[type='number']`).forEach(input => {
+        if (input.onchange.toString().includes(name)) input.value = giftData[name].out;
+      });
+      updateRemain(name);
+    }
+
+    function updateWarehouse(name, value) {
+      giftData[name].warehouse = parseInt(value) || 0;
+      updateRemain(name);
+    }
+
+    function calculateRemaining(name) {
+      const g = giftData[name];
+      return (g.start || 0) + (g.warehouse || 0) - (g.out || 0);
+    }
+
+    function updateRemain(name) {
+      const remaining = calculateRemaining(name);
+      const remainElement = document.getElementById(`remainValue-${name}`);
+      if (remainElement) {
+        remainElement.textContent = remaining;
+        remainElement.style.color = remaining < 0 ? 'var(--danger-color)' : 'var(--primary-color)';
+      }
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem("giftData", JSON.stringify(giftData));
+        showToast("Data saved successfully");
+      } catch (e) {
+        showToast("Error saving data", true);
+      }
+    }
+
+    function resetAll() {
+      if (confirm("⚠️ Are you sure you want to reset all data? This cannot be undone.")) {
+        localStorage.removeItem("giftData");
+        showToast("Data reset successfully");
+        setTimeout(() => location.reload(), 1000);
+      }
+    }
+
+    function addNewGift() {
+      const input = document.getElementById("newGiftName");
+      const name = input.value.trim();
+      
+      if (!name) {
+        showToast("Please enter a gift name", true);
+        return;
+      }
+      
+      if (giftData[name]) {
+        showToast("This gift already exists", true);
+        return;
+      }
+      
+      giftData[name] = { start: 0, out: 0, warehouse: 0 };
+      createGiftRows(name);
+      input.value = "";
+      showToast(`"${name}" added successfully`);
+      showSection('startSectionWrapper');
+    }
+
+    function removeGift() {
+      const name = prompt("Enter the exact name of the gift to remove:");
+      
+      if (!name) {
+        showToast("Operation cancelled", true);
+        return;
+      }
+      
+      if (!giftData[name]) {
+        showToast("Gift not found", true);
+        return;
+      }
+      
+      if (confirm(`Are you sure you want to permanently remove "${name}"?`)) {
+        delete giftData[name];
+        localStorage.setItem("giftData", JSON.stringify(giftData));
+        
+        // Clear all sections
+        startSection.innerHTML = '';
+        outSection.innerHTML = '';
+        remainSection.innerHTML = '';
+        warehouseSection.innerHTML = '';
+        
+        // Rebuild with remaining gifts
+        Object.keys(giftData).forEach(n => createGiftRows(n));
+        showToast(`"${name}" removed successfully`);
+      }
+    }
+
+    function showSection(id) {
+      const sections = document.querySelectorAll('.section, #addGiftForm');
+      sections.forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function exportToPDF() {
+      const staffName = prompt("Please enter staff name:");
+      if (!staffName) {
+        showToast("Staff name is required", true);
+        return;
+      }
+
+      const now = new Date();
+      const timestamp = now.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      // Create a more professional PDF content
+      let html = `
+        <style>
+          .pdf-header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            border-bottom: 2px solid #003e9c; 
+            padding-bottom: 10px;
+          }
+          .pdf-title { 
+            color: #003e9c; 
+            font-size: 24px; 
+            margin: 0;
+          }
+          .pdf-subtitle { 
+            color: #555; 
+            font-size: 16px; 
+            margin: 5px 0;
+          }
+          .pdf-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 15px 0;
+            font-size: 14px;
+          }
+          .pdf-table th { 
+            background-color: #003e9c; 
+            color: white; 
+            padding: 10px; 
+            text-align: left;
+          }
+          .pdf-table td { 
+            padding: 8px 10px; 
+            border-bottom: 1px solid #ddd;
+          }
+          .pdf-table tr:nth-child(even) { 
+            background-color: #f5f7fa;
+          }
+          .pdf-section { 
+            margin-bottom: 25px;
+          }
+          .pdf-section-title { 
+            color: #003e9c; 
+            font-size: 18px; 
+            margin: 15px 0 10px 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+          }
+          .negative { 
+            color: #dc3545; 
+            font-weight: bold;
+          }
+        </style>
+        
+        <div class="pdf-header">
+          <h1 class="pdf-title">ELARABY Gift Distribution Report</h1>
+          <div class="pdf-subtitle">Staff: ${staffName} | Date: ${timestamp}</div>
+        </div>
+        
+        <div class="pdf-section">
+          <h2 class="pdf-section-title">Start Shift Stock</h2>
+          <table class="pdf-table">
+            <tr><th>Gift</th><th>Quantity</th></tr>`;
+
+      for (const name in giftData) {
+        html += `<tr><td>${name}</td><td>${giftData[name].start}</td></tr>`;
+      }
+
+      html += `</table></div>
+        
+        <div class="pdf-section">
+          <h2 class="pdf-section-title">Warehouse Received</h2>
+          <table class="pdf-table">
+            <tr><th>Gift</th><th>Quantity</th></tr>`;
+
+      for (const name in giftData) {
+        html += `<tr><td>${name}</td><td>${giftData[name].warehouse}</td></tr>`;
+      }
+
+      html += `</table></div>
+        
+        <div class="pdf-section">
+          <h2 class="pdf-section-title">Taken Out</h2>
+          <table class="pdf-table">
+            <tr><th>Gift</th><th>Quantity</th></tr>`;
+
+      for (const name in giftData) {
+        html += `<tr><td>${name}</td><td>${giftData[name].out}</td></tr>`;
+      }
+
+      html += `</table></div>
+        
+        <div class="pdf-section">
+          <h2 class="pdf-section-title">Remaining Stock</h2>
+          <table class="pdf-table">
+            <tr><th>Gift</th><th>Quantity</th></tr>`;
+
+      for (const name in giftData) {
+        const remaining = calculateRemaining(name);
+        html += `<tr>
+          <td>${name}</td>
+          <td class="${remaining < 0 ? 'negative' : ''}">${remaining}</td>
+        </tr>`;
+      }
+
+      html += `</table></div>`;
+
+      const content = document.createElement('div');
+      content.style.padding = '15px';
+      content.style.fontFamily = "'Tajawal', sans-serif";
+      content.innerHTML = html;
+
+      const opt = {
+        margin: [10, 5, 10, 5],
+        filename: `ELARABY_Gift_Report_${staffName.replace(/\s+/g, '_')}_${now.getTime()}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          letterRendering: true,
+          useCORS: true
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'portrait',
+          compress: true
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      // Show loading message
+      showToast("Generating PDF...");
+      
+      // Generate PDF
+      html2pdf().set(opt).from(content).save().then(() => {
+        showToast("PDF downloaded successfully");
+      }).catch(err => {
+        showToast("Error generating PDF", true);
+        console.error("PDF generation error:", err);
+      });
+    }
+
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
